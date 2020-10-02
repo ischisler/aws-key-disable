@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+
+  Lambda that disables any AWS Access key not used in the past 90 days
+
+Globals:
+  Function:
+    Runtime: python3.8
+    Timeout: 300
+    MemorySize: 256
+
+Resources:
+  DeleteUnusedKeyLambdaRole: 
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: "AllowLambda"
+            Effect: Allow
+            Principal:
+              Service: "lambda.amazonaws.com"
+            Action: "sts:AssumeRole"
+      Description: "Lambda Role for disabling unused access keys" 
+      RoleName: "delete-unused-keys-lambda-role"
+      Policies:
+        - PolicyName: "delete-unused-keys-lambda-role-policy"
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'lambda:*'
+                  - 'xray:*'
+                  - 'logs:*'
+                  - 'iam:*'
+                Resource: "*"

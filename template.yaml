@@ -11,79 +11,11 @@ Globals:
     MemorySize: 256
 
 Resources:
-  DeleteUnusedKeyLambdaRole: 
-    Type: "AWS::IAM::Role"
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          - Sid: "AllowLambda"
-            Effect: Allow
-            Principal:
-              Service: "lambda.amazonaws.com"
-            Action: "sts:AssumeRole"
-      Description: "Lambda Role for disabling unused access keys" 
-      RoleName: "delete-unused-keys-lambda-role"
-      Policies:
-        - PolicyName: "delete-unused-keys-lambda-role-policy"
-          PolicyDocument:
-            Version: 2012-10-17
-            Statement:
-              - Effect: Allow
-                Action:
-                  - 'lambda:*'
-                  - 'xray:*'
-                  - 'logs:*'
-                  - 'iam:*'
-                Resource: "*"
-
-  Lambdas3Bucket: 
-    Type: "AWS::S3::Bucket"
-    Properties:
-      AccessControl: "Private"
-      BucketName: "delete-unused-key-lambda-bucket"
-      BucketEncryption:
-        ServerSideEncryptionConfiguration: 
-          - ServerSideEncryptionByDefault:
-              SSEAlgorithm: "AES256"
-      PublicAccessBlockConfiguration:
-        BlockPublicAcls: true
-        BlockPublicPolicy: true
-        IgnorePublicAcls: true
-        RestrictPublicBuckets: true
-      VersioningConfiguration:
-        Status: "Enabled"
-      
-  s3BucketPolicy: 
-    DependsOn: Lambdas3Bucket
-    Type: "AWS::S3::BucketPolicy"
-    Properties:
-      Bucket: "delete-unused-key-lambda-bucket"
-      PolicyDocument: 
-        Statement: 
-          - Sid: "AllowLambdaAccess"
-            Effect: "Allow"
-            Principal: 
-              AWS: "arn:aws:iam::012345678912:role/delete-unused-keys-lambda-role"
-            Action: 
-              - "s3:*"
-            Resource: "arn:aws:s3:::delete-unused-key-lambda-bucket"
-          - Sid: "ForceSSLOnlyAccess" 
-            Effect: "Deny"
-            Principal: 
-              AWS: "*"
-            Action: 
-              - "s3:*"
-            Resource: "arn:aws:s3:::delete-unused-key-lambda-bucket"
-            Condition:
-              Bool: 
-                aws:SecureTransport: false
-
   LambdaFunction: 
     Type: AWS::Serverless::Function
     Properties:
       Description: 'lambda for deleting unused keys'
-      Role: arn:aws:iam::012345678912:role/delete-unused-keys-lambda-role
+      Role: arn:aws:iam::137964608871:role/delete-unused-keys-lambda-role
       FunctionName: DeleteUnusedKeysLambda
       CodeUri: src
       Handler: DeleteUnusedKeys.lambda_handler
@@ -98,7 +30,7 @@ Resources:
       Name: DeleteKeysCheck1d
       ScheduleExpression: rate(1 day)
       Targets: 
-        - Arn: "arn:aws:lambda:us-west-2:012345678912:function:DeleteUnusedKeysLambda"
+        - Arn: "arn:aws:lambda:us-west-2:137964608871:function:DeleteUnusedKeysLambda"
           Id: 'DeleteUnusedKeysLambda'
       State: 'ENABLED'
 
@@ -109,4 +41,4 @@ Resources:
       FunctionName: 'DeleteUnusedKeysLambda'
       Action: 'lambda:InvokeFunction'
       Principal: 'events.amazonaws.com'
-      SourceArn: "arn:aws:lambda:us-west-2:012345678912:function:DeleteUnusedKeysLambda"
+      SourceArn: "arn:aws:lambda:us-west-2:137964608871:function:DeleteUnusedKeysLambda"

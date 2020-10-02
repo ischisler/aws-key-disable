@@ -15,9 +15,15 @@ You will need to change the AWS account number to match your AWS account number 
 2. The template.yaml file in the root directory contains the AWS CloudFormation configuration for the infra of the function. 
 3. The samconfig.toml file in the root directory contains the deployment configuration. Such as the name of the CloudFormation stack, the name of the s3 bucket to deploy the lambda function package, which region to deploy to, and whether to confirm the changeset before deploying. 
 
+## Setup
+From the root directory run to setup the role and s3 for the lambda.
+```sh
+$ /bin/bash infra_init.sh
+```
+
 ## Usage
 
-1. Build the package locally: 
+1. Build the lambda package locally: 
    ```sh
    $ sam build 
    ```

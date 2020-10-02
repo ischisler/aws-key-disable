@@ -1,0 +1,49 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+
+  s3 bucket creation infra
+
+Resources:
+  Lambdas3Bucket: 
+    Type: "AWS::S3::Bucket"
+    Properties:
+      AccessControl: "Private"
+      BucketName: "delete-unused-key-lambda-bucket"
+      BucketEncryption:
+        ServerSideEncryptionConfiguration: 
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: "AES256"
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      VersioningConfiguration:
+        Status: "Enabled"
+      
+  s3BucketPolicy: 
+    DependsOn: Lambdas3Bucket
+    Type: "AWS::S3::BucketPolicy"
+    Properties:
+      Bucket: "delete-unused-key-lambda-bucket"
+      PolicyDocument: 
+        Statement: 
+          - Sid: "AllowLambdaAccess"
+            Effect: "Allow"
+            Principal: 
+              AWS: "arn:aws:iam::137964608871:role/delete-unused-keys-lambda-role"
+            Action: 
+              - "s3:*"
+            Resource: "arn:aws:s3:::delete-unused-key-lambda-bucket"
+          - Sid: "ForceSSLOnlyAccess" 
+            Effect: "Deny"
+            Principal: 
+              AWS: "*"
+            Action: 
+              - "s3:*"
+            Resource: "arn:aws:s3:::delete-unused-key-lambda-bucket"
+            Condition:
+              Bool: 
+                aws:SecureTransport: false
+
