@@ -15,7 +15,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Description: 'lambda for deleting unused keys'
-      Role: arn:aws:iam::137964608871:role/delete-unused-keys-lambda-role
+      Role: arn:aws:iam::012345678912:role/delete-unused-keys-lambda-role
       FunctionName: DeleteUnusedKeysLambda
       CodeUri: src
       Handler: DeleteUnusedKeys.lambda_handler
@@ -30,7 +30,7 @@ Resources:
       Name: DeleteKeysCheck1d
       ScheduleExpression: rate(1 day)
       Targets: 
-        - Arn: "arn:aws:lambda:us-west-2:137964608871:function:DeleteUnusedKeysLambda"
+        - Arn: "arn:aws:lambda:us-west-2:012345678912:function:DeleteUnusedKeysLambda"
           Id: 'DeleteUnusedKeysLambda'
       State: 'ENABLED'
 
@@ -41,4 +41,4 @@ Resources:
       FunctionName: 'DeleteUnusedKeysLambda'
       Action: 'lambda:InvokeFunction'
       Principal: 'events.amazonaws.com'
-      SourceArn: "arn:aws:lambda:us-west-2:137964608871:function:DeleteUnusedKeysLambda"
+      SourceArn: "arn:aws:lambda:us-west-2:012345678912:function:DeleteUnusedKeysLambda"
