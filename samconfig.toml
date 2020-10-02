@@ -1,0 +1,10 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "delete-unused-keys-lambda"
+s3_bucket = "delete-unused-key-lambda-bucket"
+s3_prefix = "lambda-package"
+region = "us-west-2"
+confirm_changeset = true
+capabilities = "CAPABILITY_NAMED_IAM"
