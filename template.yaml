@@ -41,4 +41,4 @@ Resources:
       FunctionName: 'DeleteUnusedKeysLambda'
       Action: 'lambda:InvokeFunction'
       Principal: 'events.amazonaws.com'
-      SourceArn: "arn:aws:lambda:us-west-2:012345678912:function:DeleteUnusedKeysLambda"
+      SourceArn: !GetAtt EBTrigger.Arn
