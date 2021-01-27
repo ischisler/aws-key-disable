@@ -6,8 +6,6 @@ Labmda templates and source code to disable and delete any AWS access keys not u
 * [Docker](https://docs.docker.com/get-docker/)
 * [AWS Serverless Appication Model CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
 
-You will need to change the AWS account number to match your AWS account number in the template.yaml file. AWS account number set to 012345678912 as a placeholder. 
-
 
 ## How It Works
 

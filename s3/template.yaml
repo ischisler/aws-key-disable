@@ -32,7 +32,7 @@ Resources:
           - Sid: "AllowLambdaAccess"
             Effect: "Allow"
             Principal: 
-              AWS: "arn:aws:iam::012345678912:role/delete-unused-keys-lambda-role"
+              AWS: !Sub "arn:aws:iam::${AWS::AccountId}:role/delete-unused-keys-lambda-role"
             Action: 
               - "s3:*"
             Resource: "arn:aws:s3:::delete-unused-key-lambda-bucket"
